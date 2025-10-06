@@ -1,62 +1,179 @@
-# Express.js RESTful API Assignment
+Product API — Express.js Server (Week 2 Assignment)
 
-This assignment focuses on building a RESTful API using Express.js, implementing proper routing, middleware, and error handling.
+This is RESTful Product API built with Express.js.
+It demonstrates key concepts including middleware, authentication, error handling, validation, and advanced features like filtering, pagination, and search.
 
-## Assignment Overview
+Getting Started
 
-You will:
-1. Set up an Express.js server
-2. Create RESTful API routes for a product resource
-3. Implement custom middleware for logging, authentication, and validation
-4. Add comprehensive error handling
-5. Develop advanced features like filtering, pagination, and search
+1. Prerequisites
 
-## Getting Started
+Make sure to install the below:
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Install dependencies:
-   ```
+- Node.js (v16 or higher)
+- npm (comes with Node.js)
+
+2. Installation required libraris
    npm install
-   ```
-4. Run the server:
-   ```
-   npm start
-   ```
 
-## Files Included
+3. Run the Server
+   node server.js
+   The server will start at: http://localhost:3000
 
-- `Week2-Assignment.md`: Detailed assignment instructions
-- `server.js`: Starter Express.js server file
-- `.env.example`: Example environment variables file
+API Documentation
+Base URL
 
-## Requirements
+- http://localhost:3000/api/products
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Postman, Insomnia, or curl for API testing
+Available Endpoints
 
-## API Endpoints
+- GET / (welcome page)
+  Example
+- GET http://localhost:3000/api/products?category=electronics&search=laptop&page=1&limit=1
+- Example of its Response:
+  {
+  "page": 1,
+  "limit": 1,
+  "totalProducts": 1,
+  "totalPages": 1,
+  "products": [
+  {
+  "id": "1",
+  "name": "Laptop",
+  "description": "High-performance laptop with 16GB RAM",
+  "price": 1200,
+  "category": "electronics",
+  "inStock": true
+  }
+  ]
+  }
 
-The API will have the following endpoints:
+- GET /api/products/:id ->Get details of a specific product by its ID.
+  Example Request: GET http://localhost:3000/api/products/1
+  Response:
+  {
+  "id": "1",
+  "name": "Laptop",
+  "description": "High-performance laptop with 16GB RAM",
+  "price": 1200,
+  "category": "electronics",
+  "inStock": true
+  }
 
-- `GET /api/products`: Get all products
-- `GET /api/products/:id`: Get a specific product
-- `POST /api/products`: Create a new product
-- `PUT /api/products/:id`: Update a product
-- `DELETE /api/products/:id`: Delete a product
+- POST /api/products(Create a new product)
+  Example Request:
+  POST http://localhost:3000/api/products
+  Content-Type: application/json
 
-## Submission
+Request Body:
+{
+"name": "Tablet",
+"description": "10-inch screen tablet",
+"price": 300,
+"category": "electronics",
+"inStock": true
+}
+Response:
+{
+"id": "4",
+"name": "New Product",
+"description": "Product Description",
+"price": 21,
+"category": "Product Category",
+"inStock": true
+}
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+- DELETE /api/products/:id -> Delete a product by its ID.
+  Example Request: DELETE http://localhost:3000/api/products/1
+  Response:
+  {
+  "id": "1",
+  "name": "Laptop",
+  "description": "High-performance laptop with 16GB RAM",
+  "price": 1200,
+  "category": "electronics",
+  "inStock": true
+  }
 
-1. Complete all the required API endpoints
-2. Implement the middleware and error handling
-3. Document your API in the README.md
-4. Include examples of requests and responses
+- GET /api/asyproducts/:id- > asynchronous error handling with custom error classes.
+  Example Request: GET http://localhost:3000/api/asyproducts/123
+  Response:
+  {
+  "success": false,
+  "error": {
+  "name": "NotFoundError",
+  "message": "Product with id 211 not found"
+  }
+  }
 
-## Resources
+- GET /api/checkhandler -> Advanced endpoint with filtering, search, and pagination combined.
+  Example Request: GET http://localhost:3000/api/checkhandler?category=electronics&search=phone&page=1&limit=2
+  Response:
+  {
+  "page": 1,
+  "limit": 2,
+  "totalProducts": 1,
+  "totalPages": 1,
+  "products": [
+  {
+  "id": "2",
+  "name": "Smartphone",
+  "description": "Latest model with 128GB storage",
+  "price": 800,
+  "category": "electronics",
+  "inStock": true
+  }
+  ]
+  }
 
-- [Express.js Documentation](https://expressjs.com/)
-- [RESTful API Design Best Practices](https://restfulapi.net/)
-- [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 
+- Error Handling
+
+Global error handler catches all errors and returns structured JSON:
+
+{
+"success": false,
+"error": {
+"name": "ValidationError",
+"message": "All fields are required"
+}
+}
+
+- Authentication
+
+Some routes require an API key for access.
+
+Header Value Description
+x-api-key key@123 Valid API key
+
+If the API key is missing or invalid, the server responds with:
+
+{ "message": "Unauthorized: Invalid API key" }
+
+- Product Statistics (Bonus Feature)
+
+(Can be added as /api/products/stats)
+This would return category-wise counts:
+
+{
+"totalProducts": 5,
+"countByCategory": {
+"electronics": 2,
+"kitchen": 1
+}
+}
+
+- Testing
+  Test the API using:
+  Postman or other related tools
+
+- Tech Stack
+  Node.js
+  Express.js
+  body-parser for JSON parsing
+  uuid for unique IDs
+  Custom middlewares: logger, validateProduct, authentication
+  Global error handling (Task 4)
+  Advanced features (Task 5)
+
+- Author
+  Habtamu Asayto
+  MERN Week 2 Assignment — Express.js Server-Side Framework
